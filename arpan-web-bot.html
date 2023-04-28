@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    .main-div {
+        background-image: url("https://drive.google.com/uc?export=view&id=1U51EYI-MdHZSh2qOaBlVNs3o_CH7ma8R");
+        width: 100%;
+        height: 100vh;
+        background-size: 100% 100%;
+    }
+
+</style>
+
+<body>
+    <div class="main-div">
+    </div>
+</body>
+<script src="http://spinebot.spinebiz.com/assets/modules/channel-web/object_assign.js"></script>
+<script src="http://spinebot.spinebiz.com/assets/modules/channel-web/inject.js"></script>
+<script>
+    window.botpressWebChat.init({
+        host: 'https://spinebot.spinebiz.com/',
+        botId: "arpan-bot",
+        extraStylesheet: '/assets/modules/channel-web/arpanbot-style-sheet.css',
+        exposeStore: false,
+        hideWidget: false, //Hide widget icon from the website
+        showConversationsButton: false, //Show Conversations Button in the menu of Webchat
+        enableConversationDeletion: false, //Enable delete conversations button in Webchat
+        startNewConvoOnTimeout: true,
+        enableReset: true, //Enable reset conversations button in Webchat
+        enablePersistentHistory: true, //When enabled, sent messages are persisted to local storage (recall previous messages)
+        enableResetSessionShortcut: true,
+        closeOnEscape: true, //Close on Escape button
+        enableVoiceComposer: false, //When true, WebChat tries to use native webspeech api (uses hosted mozilla and google voice services)
+        showTimestamp: false, //Timestamp in HH:mm:ss
+        disableNotificationSound: true, //If true, chat will no longer play the notification sound for new messages.
+        showPoweredBy: false, //Displays the Powered by Botpress under the webchat. Help us spread the word, enable this to show your support !
+        enableTranscriptDownload: true, //Downloading transcript of the chat from WebChat
+    })
+
+    window.addEventListener('message', function (event) {
+        if ((event.data.payload || {}).type === 'visit' || event.data.name === 'webchatLoaded') {
+            window.botpressWebChat.sendEvent({
+                type: 'proactive-trigger',
+                channel: 'web',
+                payload: {
+                    text: 'dummy'
+                }
+            });
+        }
+
+        //- To start conversation automatically on clicking reset btn(history wont cleared)
+        if (event.data.payload.type === 'session_reset') {
+            window.botpressWebChat.sendEvent({
+                type: 'proactive-trigger',
+                channel: 'web',
+                payload: {
+                    text: 'dummy'
+                }
+            });
+            window.webchat_store.clearMessages();
+        }
+    });
+</script>
+
+</html>
